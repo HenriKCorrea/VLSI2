@@ -1,0 +1,16 @@
+------------------------------------------------------------
+-- File created by Prof. PhD. Leticia Bolzani Poehls
+-- 18 May 2011
+------------------------------------------------------------
+
+Modelsim:
+
+HDL Files - aes_package.vhd, key_expander.vhd, aes128_fast.vhd (folder: /trunk/rtl)
+TB Files - aes_tb_package.vhd, aes_tester.vhd (folder: /trunk/tb)
+Data Files - text_in.txt, enconded_text.txt, aes_data_in.txt (folder: /trunk/sim)
+
+Synthesis with RTL Compiler:
+
+Use only the HDL files. Check the documents in order to identify the clock frequency of the component.
+
+
