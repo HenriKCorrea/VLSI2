@@ -1,0 +1,13 @@
+Block <name>: number of signals: <size>
+  |->Signal <name>: switching activity: <number of transitions>
+  |->Signal <name>: switching activity: <number of transitions>
+clock frequency: <freq>
+Signal with highest switching activity (not including clock): <name>
+Signal with lowest switching activity (not including reset): <name>
+
+Block <name>: number of signals: <size>
+  |->Signal <name>: switching activity: <number of transitions>
+...
+clock frequency: <freq>
+Signal with highest switching activity (not including clock): <name>
+Signal with lowest switching activity (not including reset): <name>

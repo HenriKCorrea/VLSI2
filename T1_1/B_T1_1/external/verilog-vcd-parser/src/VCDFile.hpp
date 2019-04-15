@@ -100,6 +100,15 @@ class VCDFile {
             VCDTime       time
         );
 
+        /*!
+        @brief Get a vector of values of a particular signal according to transitions in time.
+        @param hash in - The hashcode for the signal to identify it.
+        @returns A pointer to a vector of values at the supplie time, or nullptr if
+        no such record can be found.
+        */
+VCDSignalValues *  get_signal_values (
+            VCDSignalHash hash
+        );
         
         /*!
         @brief Return a pointer to the set of timestamp samples present in
