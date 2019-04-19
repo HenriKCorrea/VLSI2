@@ -3,8 +3,8 @@
 #------------------------------------------------------------------------------
 #    Project directory settings (Put your actual directory paths here)
 #------------------------------------------------------------------------------
-set script_dir "~/VLSI2-master/T1_1/A_T1_1"
-set proj_dir "~/VLSI2-master/aes_crypto_core/trunk"
+set script_dir "/home/vlsi2_g04/VLSI2-master/T1_1/A_T1_1"
+set proj_dir "/home/vlsi2_g04/VLSI2-master/aes_crypto_core/trunk"
 set sim_dir "$proj_dir/sim"
 set rtl_dir "$proj_dir/rtl"
 set tb_dir "$proj_dir/tb"
