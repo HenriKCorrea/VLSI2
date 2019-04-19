@@ -78,7 +78,7 @@ type array2 is array (1 to (total_num_char/16 + 1)) of std_logic_vector(127 down
 -- array to hold decrypted binary values
 type array3 is array (1 to 9) of std_logic_vector(127 downto 0);
 --@@@@@@@@@@@@@@@@@@@@@@@@@@@
-signal indicator: integer:=2; -- 1-> text_2_bits; 0-> bits_2_text; 2-> bits_2_bits
+signal indicator: integer:=0; -- 1-> text_2_bits; 0-> bits_2_text; 2-> bits_2_bits
 --@@@@@@@@@@@@@@@@@@@@@@@@@@@
 signal clock_tb: std_logic:='0';
 signal reset_tb: std_logic:='0';
@@ -167,7 +167,15 @@ begin
 end process;
 
 clock_tb <= not clock_tb after 50 ns;
-reset_tb <= '1','0' after 150 ns;
+
+--Henrique: Created process to control reset signal when a test ends
+process
+begin
+	reset_tb <= '1','0' after 150 ns;
+	wait until done_tb = '1' and mode_tb = '1'; wait for 100 ns;
+	reset_tb <= '1','0' after 150 ns;
+	wait;
+end process;
 
 itr_cnt <= length_inline/16 when ((length_inline rem 16) = 0) else (length_inline/16 +1);
 process
@@ -177,7 +185,12 @@ file outfile3: text open write_mode is "aes_data_out.txt";
 variable outline: line;
 variable x: integer:=0;
 variable getchar: character;
+
+VARIABLE end_test: std_logic := '0';	--Henrique: created end_test variable to control when to stop loop
+
 begin
+while end_test /= '1' loop	--Henrique: Created loop to allow test both encode and decode operations on a single run
+
  key_tb <= (others => '0');
  data_in_tb <= (others => '0');
  code_out <=(others =>(others => '0'));
@@ -278,6 +291,15 @@ elsif(indicator = 2)  then
    wait until(clock_tb'event and clock_tb = '1');
  end if;
  
+	--Henrique: when decode test ends, change to encode test. When encode test ends, wait forever (test finishes)
+	 if (mode_tb = '0') then
+		indicator <= 1;
+		mode_tb <= '1';
+	 elsif (mode_tb = '1') then
+		end_test := '1';
+	 end if;
+ 
+ end loop;
  wait;
 end process;
 
