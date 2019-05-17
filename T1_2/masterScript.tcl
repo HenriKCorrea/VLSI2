@@ -10,6 +10,7 @@ set_db script_search_path $path_script
 #setting lib path
 set_db lib_search_path $path_lib
 
+#TODO:Perguntar para a professora porque só tem nom aqui
 #setting technology library
 set_db library $core_lib_nom
 
@@ -75,6 +76,13 @@ foreach i $effort {
 {
 
 #===============================================================================
+## Apply low power design config
+#===============================================================================
+set_db lp_insert_clock_gating true
+set_db lp_insert_discrete_clock_gating_logic true
+
+
+#===============================================================================
 ## Apply constraints
 #===============================================================================
 
@@ -87,10 +95,10 @@ foreach i $effort {
 ## Synthesize
 #===============================================================================
 #TODO -> put inside for each
-#set syn_generic_effort {low} 
-#syn_generic
-#set syn_map_effort {low} 
-#syn_map
+set syn_generic_effort {high} 
+syn_generic
+set syn_map_effort {high} 
+syn_map
 
 #===============================================================================
 ## Report

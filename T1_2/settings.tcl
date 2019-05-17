@@ -22,6 +22,12 @@ set core_lef "${path_lib}/EncounterTechnoKit_cmos065_7m4x0y2z_AP@5.3.1/TECH/cmos
 #setting capacitance table variable
 set cap_tab "${path_lib}/EncounterTechnoKit_cmos065_7m4x0y2z_AP@5.3.1/TECH/cmos065_7m4x0y2z_AP_Worst.captable"
 
+#setting effort variable
+set effort {low medium high}
+
+#setting corner variable
+set corner {NOM WC BC}
+
 
 
 
