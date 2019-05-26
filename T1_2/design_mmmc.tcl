@@ -19,8 +19,7 @@ create_timing_condition -name WC_timing -opcond cond_WC -library_sets WC -opcond
 create_timing_condition -name BC_timing -opcond cond_BC -library_sets BC -opcond_library $core_lib_bc
 
 #constraints
-###TODO Question: Shall we read SDC file? read_sdc ./inputconstraints.sdc
-create_constraint_mode -name default_constraint -sdc_files constraints_pre_rtl.sdc
+create_constraint_mode -name default_constraint -sdc_files inputconstraints.sdc
 
 #delay corner
 create_delay_corner -name delay_corner_NOM -timing_condition NOM_timing
@@ -32,3 +31,4 @@ create_analysis_view -name view_NOM -constraint_mode default_constraint -delay_c
 create_analysis_view -name view_BC -constraint_mode default_constraint -delay_corner delay_corner_BC
 create_analysis_view -name view_WC -constraint_mode default_constraint -delay_corner delay_corner_WC
 
+set_analysis_view -setup view_NOM
