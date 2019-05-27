@@ -57,7 +57,7 @@ foreach i $effort {
 
 		report timing > output/${i}/${j}/timing_${i}_${j}.txt
 		report area > output/${i}/${j}/area_${i}_${j}.txt
-		report gates > output/${i}/${j}/gates_${i}_${j}.txt
+		report power > output/${i}/${j}/power_${i}_${j}.txt
     
 		write_sdc -view view_${j} > output/${i}/${j}/design_post_logic_synthesis_${i}_${j}.sdc
 		write_sdf -view view_${j} > output/${i}/${j}/design_post_logic_synthesis_${i}_${j}.sdf
@@ -89,7 +89,7 @@ syn_map
 ## Report
 #===============================================================================
 report area > output/lowpower/area_high_NOM_lowpower.txt
-report gates > output/lowpower/gates_high_NOM_lowpower.txt
+report power > output/lowpower/power_high_NOM_lowpower.txt
 report timing > output/lowpower/timing_high_NOM_lowpower.txt
 
 #===============================================================================
