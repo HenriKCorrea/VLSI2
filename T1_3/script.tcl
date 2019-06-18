@@ -1,6 +1,13 @@
+#To start innovus use the following commands: 
+#innovus -common_ui 
+#source script.tcl
+
 ##=====================================================================================
 # Environment Configuration
 ##=====================================================================================
+
+#Attempt to download synthesys phase output data
+sh downloadOutputFolder.sh
 
 #Read configurations file
 #include settings.tcl
@@ -55,11 +62,4 @@ add_well_taps -cell HS65_LS_FILLERNPWPFP3 -cell_interval 20 -prefix WELLTAP
 
 #placement
 set_db place_global_ignore_scan false
-
-
-
-#create floorplan -site <name> -core size <width> <height> <margins>
-#create floorplan -site CORE -core size 400 400 20.0 20.0 20.0 20.0
-
-
 
