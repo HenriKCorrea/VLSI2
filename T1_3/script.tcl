@@ -60,6 +60,9 @@ write_io_file aes128_fast.io
 #Well taps
 add_well_taps -cell HS65_LS_FILLERNPWPFP3 -cell_interval 20 -prefix WELLTAP
 
-#placement
+#placement (place standard cells)
 set_db place_global_ignore_scan false
-
+set_multi_cpu_usage -local_cpu 8 -cpu_per_remote_host 8 -remote_host 0 -keep_license true
+set_distributed_hosts -local
+set_db place_design_floorplan_mode 0
+place_design
