@@ -6,7 +6,7 @@
 # Environment Configuration
 ##=====================================================================================
 
-#Attempt to download synthesys phase output data
+#Attempt to download logic synthesys phase output data
 sh downloadOutputFolder.sh
 
 #Read configurations file
@@ -16,7 +16,7 @@ sh downloadOutputFolder.sh
 #set_db script_search_path "/home/vlsi2_g04/VLSI2-master/T1_3/output/high/NOM/snapshot_high_NOM/"
 
 #set technology node
-## Especifica o nodo tecnológico em nanometros
+## Especifica o nodo tecnolÃ³gico em nanometros
 set_db design_process_node 65
 
 #set power/grounds nets
