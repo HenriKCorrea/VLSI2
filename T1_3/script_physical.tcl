@@ -1,6 +1,6 @@
 #To start innovus use the following commands: 
 #innovus -common_ui 
-#source script.tcl
+#source script_physical.tcl
 
 ##=====================================================================================
 # Environment Configuration
@@ -14,7 +14,7 @@ mkdir -p physicalOutput
 cp "output/high/NOM/design_post_logic_synthesis_high_NOM.sdc" "physicalOutput/constraints_pre_physical.sdc"
 
 #set technology node
-## Especifica o nodo tecnológico em nanometros
+## Especifica o nodo tecnolÃ³gico em nanometros
 set_db design_process_node 65
 
 #set power/grounds nets
