@@ -16,9 +16,10 @@
 #
 #
 if [ ! -d "output" ]; then	#Only proceed if directory do NOT exists
-	#Download zip file
-	curl --insecure 'https://doc-08-bs-docs.googleusercontent.com/docs/securesc/8fu69g2eb9k8r0uvoh791prm247jug1u/br62pkrdlbd7j4hgoj39frp1t8oq55lg/1560866400000/17030387196731929750/17030387196731929750/1XteAYNoKe_WCgcqi2u11W8uc9GrQFIug?e=download' -H 'authority: doc-08-bs-docs.googleusercontent.com' -H 'upgrade-insecure-requests: 1' -H 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36' -H 'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3' -H 'accept-encoding: gzip, deflate, br' -H 'accept-language: pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7' -H 'cookie: AUTH_klvd8s94rra2n5h4s8ul2f3jj6cq9cka=17030387196731929750|1560866400000|gqcaelebdjga9enkui6vgngibuuuab3b' --compressed > output.zip
-	#Only proceed if zip file has been downloaded successfully and is not empty
+	#Download zip file	
+  curl --insecure 'https://doc-08-bs-docs.googleusercontent.com/docs/securesc/8fu69g2eb9k8r0uvoh791prm247jug1u/9l7dtrg0bepau7f3h0qnounfdpv9cibd/1560960000000/17030387196731929750/17030387196731929750/1XteAYNoKe_WCgcqi2u11W8uc9GrQFIug?e=download&nonce=e2vpipki0encm&user=17030387196731929750&hash=jf5h0llrbbaoqkp5a0lhr6qlvrjmtgbt' -H 'Connection: keep-alive' -H 'Upgrade-Insecure-Requests: 1' -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3' -H 'X-Client-Data: CIa2yQEIprbJAQjBtskBCKmdygEIqKPKAQixp8oBCOKoygEI8anKAQjNrcoBCJ6uygE=' -H 'Accept-Encoding: gzip, deflate, br' -H 'Accept-Language: pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7' -H 'Cookie: AUTH_klvd8s94rra2n5h4s8ul2f3jj6cq9cka_nonce=e2vpipki0encm' --compressed  > output.zip
+  
+  #Only proceed if zip file has been downloaded successfully and is not empty
 	if [ -f "output.zip" ] && [ $(stat -c %b output.zip) != 0 ]; then	
 		unzip output.zip	#Extract zip contents
 		rm output.zip  		#Remove zip file
