@@ -6,17 +6,15 @@
 # Environment Configuration
 ##=====================================================================================
 
-#Attempt to download logic synthesys phase output data
+#Attempt to download synthesys phase output data
 sh downloadOutputFolder.sh
 
-#Read configurations file
-#include settings.tcl
-
-#Scripts
-#set_db script_search_path "/home/vlsi2_g04/VLSI2-master/T1_3/output/high/NOM/snapshot_high_NOM/"
+#Copy .sdc file from synthesis phase and rename it to constraints_pre_physical.sdc 
+mkdir -p physicalOutput 
+cp "output/high/NOM/design_post_logic_synthesis_high_NOM.sdc" "physicalOutput/constraints_pre_physical.sdc"
 
 #set technology node
-## Especifica o nodo tecnolÃ³gico em nanometros
+## Especifica o nodo tecnológico em nanometros
 set_db design_process_node 65
 
 #set power/grounds nets
@@ -50,8 +48,8 @@ add_rings -nets {gnd vdd} -type core_rings -follow core -layer {top M1 bottom M1
 route_special -connect {block_pin pad_pin pad_ring core_pin floating_stripe} -layer_change_range { M1(1) AP(8) } -block_pin_target {nearest_target} -pad_pin_port_connect {all_port one_geom} -pad_pin_target {nearest_target} -core_pin_target {first_after_row_end} -floating_stripe_target {block_ring pad_ring ring stripe ring_pin block_pin followpin} -allow_jogging 1 -crossover_via_layer_range { M1(1) AP(8) } -nets { gnd vdd } -allow_layer_change 1 -block_pin use_lef -target_via_layer_range { M1(1) AP(8) }
 
 #Finishing flooplan/power planing
-write_floorplan aes128_fast.fp
-write_io_file aes128_fast.io
+write_floorplan physicalOutput/aes128_fast.fp
+write_io_file physicalOutput/aes128_fast.io
 
 ##in future synthesis, load the configurations
 #read_floorplan aes128_fast.fp
@@ -66,3 +64,53 @@ set_multi_cpu_usage -local_cpu 8 -cpu_per_remote_host 8 -remote_host 0 -keep_lic
 set_distributed_hosts -local
 set_db place_design_floorplan_mode 0
 place_design
+
+#Optimization post placement
+#NOTE. After optimization, the command opt_design generates a timing report. Redirecting this report to /dev/null since the report will be generated later using the appropriate commands (time_design)
+opt_design -pre_cts -report_dir /dev/null
+
+#Peroform timing analysis report (post placement) 
+time_design -pre_cts -ideal_clock -path_report -drv_report -slack_report -num_paths 50 -report_prefix aes128_fast_preCTS -report_dir physicalOutput/timingReports/aes128_fast_preCTS
+
+#Legacy CTS Engine
+eval_legacy { setCTSMode -engine ck }
+eval_legacy { set_ccopt_property buffer_cells { HS65_GS_BFX2 HS65_GS_BFX22 HS65_GS_BFX40 HS65_GS_BFX7 } }
+eval_legacy { set_ccopt_property inverter_cells { HS65_GS_IVX13 HS65_GS_IVX31 HS65_GS_VIX4 HS65_GS_IVX49 HS65_GS_IVX7 } }
+eval_legacy { set_ccopt_property use_inverters true }
+eval_legacy { create_ccopt_clock_tree_spec -filename physicalOutput/ccopt.spec }
+
+#Optimization post CTS - Innovus CTS Engine
+#NOTE. After optimization, the command opt_design generates a timing report. Redirecting this report to /dev/null since the report will be generated later using the appropriate commands (time_design)
+set_db timing_analysis_type ocv
+set_db opt_fix_fanout_load true
+opt_design -post_cts -drv -report_dir /dev/null
+
+#Peroform timing analysis report (post Clock Tree Synthesis) 
+time_design -post_cts -ideal_clock -path_report -drv_report -slack_report -num_paths 50 -report_prefix aes128_fast_postCTS -report_dir physicalOutput/timingReports/aes128_fast_postCTS
+
+#Nano route (design)
+route_design -global_detail -wire_opt
+
+#Optimization post route
+#NOTE. After optimization, the command opt_design generates a timing report. Redirecting this report to /dev/null since the report will be generated later using the appropriate commands (time_design)
+set_db timing_analysis_type ocv
+set_db opt_fix_fanout_load true
+opt_design -post_route -drv -report_dir /dev/null
+
+#Peroform timing analysis report (post Route) 
+time_design -post_route -ideal_clock -path_report -drv_report -slack_report -num_paths 50 -report_prefix aes128_fast_postRoute -report_dir physicalOutput/timingReports/aes128_fast_postRoute
+
+#Verification
+check_drc -out_file physicalOutput/check_drc.txt
+check_connectivity -type all -error 1000 -warning 50 -out_file physicalOutput/check_connectivity.txt
+check_legacy_design -all -no_html -out_file physicalOutput/check_legacy_design.txt
+
+#Reports and outputs
+report_area -out_file physicalOutput/report_area.txt
+report_power -out_file physicalOutput/report_power.txt
+report_timing -early > physicalOutput/report_timing_early.txt
+report_timing -late > physicalOutput/report_timing_late.txt
+write_netlist physicalOutput/design_pos_physical.v
+write_def -floorplan -netlist -routing physicalOutput/design_pos_physical.def
+write_sdf physicalOutput/timing_pos_physical.sdf
+
