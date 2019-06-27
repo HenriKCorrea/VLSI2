@@ -113,7 +113,12 @@ opt_design -post_cts -drv -report_dir /dev/null
 #Peroform timing analysis report (post Clock Tree Synthesis) 
 time_design -post_cts -ideal_clock -path_report -drv_report -slack_report -num_paths 50 -report_prefix aes128_fast_postCTS -report_dir physicalOutput/timingReports/aes128_fast_postCTS
 
+##=====================================================================================
+# Routing
+##=====================================================================================
+
 #Nano route (design)
+#Runs routing or postroute via or wire optimization using the NanoRoute router. 
 route_design -global_detail -wire_opt
 
 #Optimization post route
@@ -125,9 +130,16 @@ opt_design -post_route -drv -report_dir /dev/null
 #Peroform timing analysis report (post Route) 
 time_design -post_route -ideal_clock -path_report -drv_report -slack_report -num_paths 50 -report_prefix aes128_fast_postRoute -report_dir physicalOutput/timingReports/aes128_fast_postRoute
 
-#Verification
+##=====================================================================================
+# Verification, Reports and outputs
+##=====================================================================================
+
+#Verification 
+#Checks for DRC violations and creates violation markers in the design database 
 check_drc -out_file physicalOutput/check_drc.txt
+#Detects conditions such as opens, unconnected wires (geometric antennas), unconnected pins, loops, partial routing, and unrouted nets
 check_connectivity -type all -error 1000 -warning 50 -out_file physicalOutput/check_connectivity.txt
+#Checks for missing or inconsistent library and design data at any stage of the design
 check_legacy_design -all -no_html -out_file physicalOutput/check_legacy_design.txt
 
 #Reports and outputs
